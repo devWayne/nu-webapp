@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var dealistTpl = require('dealTpl');
 
 	var geo = require('geo'),
+		share=require('share'),
 		httpUtils = require('httpUtils');
 	require('bridge');
 
@@ -21,7 +22,8 @@ define(function(require, exports, module) {
 	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude;
 
 	var mdomain='http://m.51ping.com';
-
+	var _g=new geo();
+	var nList=1,perList=1;
 	function getDealsInfo(data) {
 		$.ajax({
 			url: 'http://evt.dianping.dp/mfchwlzs/json/1.json',
@@ -29,7 +31,6 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: data,
 			success: function(json) {
-				var _g=new geo();
 				if(appLatitude&&appLongitude){
 						$(json.dealist).each(function(idx, v) {
 							if (v.geoLocations.length>1 &&appLatitude){
@@ -41,7 +42,7 @@ define(function(require, exports, module) {
 								}, v.geoLocations[_idx]);
 							})
 							v.minValue=Math.min.apply(Math,v.value);
-								v.distance=_g.distance(v.minValue);
+							v.distance=_g.distance(v.minValue);
 							}
 							else if(v.geoLocations[0] &&appLatitude) {
 								v.minValue = _g.value({
@@ -56,39 +57,45 @@ define(function(require, exports, module) {
 							if(!a.minValue)return 1;
 							if(!b.minValue)return -1;
 						})
-						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));	
-				}
-				else{
-					
-					_g.getLocation(	function() {
-						$(json.dealist).each(function(idx, v) {
-							if (v.geoLocations.length>1 &&window.latitude){
-							v.value=[];
-							$(v.geoLocations).each(function(_idx,_v){
-								v.value[_idx]= _g.value({
-									latitude: window.latitude,
-									longitude: window.longitude
-								}, v.geoLocations[_idx]);
-							})
-							v.minValue=Math.min.apply(Math,v.value);
-								v.distance=_g.distance(v.minValue);
+						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));							if($('.item').length>nList){
+							$('.item').each(function(idx,val){
+								if((idx+1)>nList){
+						 		 $('.item').eq(idx).hide();
+								}
+							});
+						}
+						$('.check-more').on('click',function(e){
+							for(var i=nList;i<nList+perList;i++){
+							 $('.item').eq(i).show();
+							};
+							if(nList>$('.item').length||nList==$('.item').length){
+							$(this).hide();
 							}
-							else if(v.geoLocations[0] &&window.latitude) {
-								v.minValue = _g.value({
-									latitude:window.latitude,
-									longitude:window.longitude
-								}, v.geoLocations[0]);
-								v.distance=_g.distance(v.minValue);
-							}
+							nList=nList+perList;
 						})
-						json.dealist.sort(function(a, b) {
-							if (a.minValue && b.minValue)return a.minValue - b.minValue;
-							if(!a.minValue)return 1;
-							if(!b.minValue)return -1;
-						})
-						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));
-					})
+
+
 				}
+				else{		
+					$('.detail-list').append(Mustache.render(dealistTpl.deal, json));								if($('.item').length>nList){
+							$('.item').each(function(idx,val){
+								if((idx+1)>nList){
+						 		 $('.item').eq(idx).hide();
+								}
+							});
+						}
+						$('.check-more').on('click',function(e){
+							for(var i=nList;i<nList+perList;i++){
+							 $('.item').eq(i).show();
+							};
+							if(nList>$('.item').length||nList==$('.item').length){
+							$(this).hide();
+							}
+							nList=nList+perList;
+						})
+				}
+				getUserInfo();
+
 			}
 		})
 	}
@@ -110,7 +117,14 @@ define(function(require, exports, module) {
 			data: data,
 			jsonp: 'jsonp',
 			success: function(json) {
-				setDirect(json);
+			if(json.success&&json.realtime_tg_fresh){
+				$('.buy-btn').text('免费领');
+				$('.price strong').text('0')
+			}
+			else{
+			$('.container.op-box').append('<img src="http://t.dianping.com/events/m/mfchgds/lyhneww.png">')
+			}
+				setDirect(json);		
 			}
 		})
 	};
@@ -141,6 +155,7 @@ define(function(require, exports, module) {
 			}
 			//status 3
 			if (json.integrity_score < 0) {
+			$.removeCookie('dper');
 				location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(dealUrl));
 			}
 
@@ -176,7 +191,7 @@ define(function(require, exports, module) {
 
 	exports.init = function() {
 		getDealsInfo();
-		getUserInfo();
+		share.shareBtn();
 
 	}
 

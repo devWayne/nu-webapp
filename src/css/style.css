@@ -581,3 +581,33 @@ li {
   font-size: 12px;
   color: #999;
 }
+.check-more {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.share-tips {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+.share-tips i {
+  display: block;
+  background: url(http://si1.s1.dpfile.com/t/cssnew/events/scare-buying-mobile/css/i/share-guide.23b56d68b5c12067a53c431ef39424c5.png);
+  background-size: 151px 126px;
+  width: 151px;
+  height: 126px;
+  float: right;
+  margin-right: 20px;
+}
+.share-tips p {
+  color: #FF8400;
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  padding-top: 132px;
+}
