@@ -2,12 +2,12 @@ define(function(require, exports, module) {
 
  var dealTpl={
 
- 'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="2033152">\
+ 'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="{{id}}">\
             <div class="pic">\
                 <img lazy-src="{{imgUrl}}">\
             </div>\
             <div class="info">\
-                <h3>{{dealGroupShortName}}</h3>\
+                <h3>{{dealGroupShortName}}<span class="geo">{{distance}}</span></h3>\
                 <h4>{{recommendReason}}</h4>\
                 <div class="buy-box Fix">\
                     <div class="price-box f-l">\

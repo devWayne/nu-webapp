@@ -75,7 +75,7 @@ gulp.task('compile:less', function () {
     return gulp.src(template('<%= src %>/less/*.less', dirs))
                .pipe(less())
                .pipe(plugins.header(banner))
-               .pipe(gulp.dest(template('<%= dist %>/css', dirs)));
+               .pipe(gulp.dest(template('<%= src %>/css', dirs)));
 
 });
 
