@@ -9,9 +9,7 @@ define(function(require, exports, module) {
 	proto.constructor = geo;
 
 
-	proto.distance = function(geo1, geo2) {
-
-		var distance=proto.value(geo1,geo2);
+	proto.distance = function(distance) {
 
 		if(distance>1){
 			var _km=distance-distance%1;

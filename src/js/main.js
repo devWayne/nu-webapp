@@ -18,7 +18,7 @@ define(function(require, exports, module) {
 		token = httpUtils.getParam('token'),
 		appLatitude = httpUtils.getParam('latitude'),
 		appLongitude = httpUtils.getParam('longitude');
-	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + latitude + "&longitude=" + longitude;
+	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude;
 
 	var mdomain='http://m.51ping.com';
 
@@ -29,38 +29,66 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: data,
 			success: function(json) {
-				var _g = new geo();
-				if(latitide&&longitude){
-
-				}
-				_g.getLocation(function() {
-					$(json.dealist).each(function(idx, v) {
-						if (v.geoLocations.length>1){
+				var _g=new geo();
+				if(appLatitude&&appLongitude){
+						$(json.dealist).each(function(idx, v) {
+							if (v.geoLocations.length>1 &&appLatitude){
+							v.value=[];
 							$(v.geoLocations).each(function(_idx,_v){
-								v["value"+_idx]= _g.value({
-								latitude: window.latitude,
-								longitude: window.longitude
+								v.value[_idx]= _g.value({
+									latitude: appLatitude,
+									longitude: appLongitude
 								}, v.geoLocations[_idx]);
 							})
-						}
-						if (v.geoLocations[0] && window.latitude) {
-							v.distance = _g.distance({
-								latitude: window.latitude,
-								longitude: window.longitude
-							}, v.geoLocations[0]);
-							v.value = _g.value({
-								latitude: window.latitude,
-								longitude: window.longitude
-							}, v.geoLocations[0]);
-						}
+							v.minValue=Math.min.apply(Math,v.value);
+								v.distance=_g.distance(v.minValue);
+							}
+							else if(v.geoLocations[0] &&appLatitude) {
+								v.minValue = _g.value({
+									latitude:appLatitude,
+									longitude:appLongitude
+								}, v.geoLocations[0]);
+								v.distance=_g.distance(v.minValue);
+							}
+						})
+						json.dealist.sort(function(a, b) {
+							if (a.minValue && b.minValue)return a.minValue - b.minValue;
+							if(!a.minValue)return 1;
+							if(!b.minValue)return -1;
+						})
+						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));	
+				}
+				else{
+					
+					_g.getLocation(	function() {
+						$(json.dealist).each(function(idx, v) {
+							if (v.geoLocations.length>1 &&window.latitude){
+							v.value=[];
+							$(v.geoLocations).each(function(_idx,_v){
+								v.value[_idx]= _g.value({
+									latitude: window.latitude,
+									longitude: window.longitude
+								}, v.geoLocations[_idx]);
+							})
+							v.minValue=Math.min.apply(Math,v.value);
+								v.distance=_g.distance(v.minValue);
+							}
+							else if(v.geoLocations[0] &&window.latitude) {
+								v.minValue = _g.value({
+									latitude:window.latitude,
+									longitude:window.longitude
+								}, v.geoLocations[0]);
+								v.distance=_g.distance(v.minValue);
+							}
+						})
+						json.dealist.sort(function(a, b) {
+							if (a.minValue && b.minValue)return a.minValue - b.minValue;
+							if(!a.minValue)return 1;
+							if(!b.minValue)return -1;
+						})
+						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));
 					})
-					json.dealist.sort(function(a, b) {
-						if (a.value && b.value)return a.value - b.value;
-						if(!a.value)return 1;
-						if(!b.value)return -1;
-					})
-					$('.detail-list').append(Mustache.render(dealistTpl.deal, json));
-				})
+				}
 			}
 		})
 	}
@@ -85,8 +113,9 @@ define(function(require, exports, module) {
 				setDirect(json);
 			}
 		})
-	}
+	};
 
+	
 	function setDirect(json) {
 
 		$(document).on('click','.item',function(e) {
@@ -141,6 +170,9 @@ define(function(require, exports, module) {
 
 		});
 	}
+
+
+
 
 	exports.init = function() {
 		getDealsInfo();
