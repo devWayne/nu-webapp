@@ -20,14 +20,19 @@ define(function(require, exports, module) {
 		appLatitude = httpUtils.getParam('latitude'),
 		appLongitude = httpUtils.getParam('longitude');
         couponRuleID = httpUtils.getParam('couponRuleID');
+        env = httpUtils.getParam('env');
 	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&couponRuleID=" + couponRuleID;
 
 	var mdomain='http://m.51ping.com';
+    var dealInfoUrl = 'http://evt.dianping.com/mfchwl/json/1.json';
+    if(env != 'product'){
+        dealInfoUrl = 'http://evt.dianping.dp/mfchwlzs/json/1.json';
+    }
 	var _g=new geo();
 	var nList=1,perList=1;
 	function getDealsInfo(data) {
 		$.ajax({
-			url: 'http://evt.dianping.dp/mfchwlzs/json/1.json',
+			url: dealInfoUrl,
 			type: 'GET',
 			dataType: 'json',
 			data: data,
