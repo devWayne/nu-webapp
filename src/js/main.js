@@ -19,7 +19,8 @@ define(function(require, exports, module) {
 		token = httpUtils.getParam('token'),
 		appLatitude = httpUtils.getParam('latitude'),
 		appLongitude = httpUtils.getParam('longitude');
-	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude;
+        couponRuleID = httpUtils.getParam('couponRuleID');
+	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&couponRuleID=" + couponRuleID;
 
 	var mdomain='http://m.51ping.com';
 	var _g=new geo();
@@ -137,6 +138,11 @@ define(function(require, exports, module) {
 			var dealId = $(e.target).parents('a').attr('data-tuandealid');
 
 			var dealUrl = mdomain+"/tuan/eventdeal/" + dealId+ '?' + params;
+			var mDealUrl = mdomain+"/tuan/deal/" + dealId;
+            if(json.env == 'product'){
+               mdomain = 'http://m.dianping.com';
+            }
+
 			//status 1
 			if (version.replace(/\./, "") < 68.5) {
 				DPApp.show_alert({
@@ -153,9 +159,15 @@ define(function(require, exports, module) {
 			if (!json.success) {
 				location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(dealUrl));
 			}
+
+            //oldUser  redirect to m.dianping.com site
+            if(json.realtime_tg_fresh != 1){
+                location.href = mDealUrl;
+            }
+
 			//status 3
-			if (json.integrity_score < 0) {
-			$.removeCookie('dper');
+			if (json.integrity_score <= 0) {
+			    $.removeCookie('dper');
 				location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(dealUrl));
 			}
 
@@ -186,13 +198,10 @@ define(function(require, exports, module) {
 		});
 	}
 
-
-
-
 	exports.init = function() {
 		getDealsInfo();
 		share.shareBtn();
-
+		getUserInfo();
 	}
 
 });
