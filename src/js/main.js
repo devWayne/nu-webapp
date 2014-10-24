@@ -10,7 +10,8 @@ define(function(require, exports, module) {
 		share=require('share'),
 		httpUtils = require('httpUtils');
 	require('bridge');
-
+	var cancelBtn = $('.j-back'),
+ 	updateBtn = $('.j-update');
 	var eventId = httpUtils.getParam('eventId'),
 		eventName = httpUtils.getParam('eventName'),
 		cityid = httpUtils.getParam('cityid'),
@@ -36,6 +37,35 @@ define(function(require, exports, module) {
         mdomain='http://m.51ping.com';
         eDomain='http://t.51ping.com';
     }
+    	var _utils = {
+
+ 		showOverlay: function(clear, opts) {
+ 			var overlay = $('<div id="J_overlay" style="position:absolute;left:0;top:0;background:#000;_filter:alpha(opacity=50);z-index:999;"></div>');
+
+ 			if (!clear) {
+ 				overlay.appendTo($('body')).css({
+ 					'width': $(window).width(),
+ 					'height': '1700px',
+ 					'opacity': 0.5
+ 				});
+ 			} else {
+ 				$('#J_overlay').remove();
+ 			}
+ 		},
+ 		centershow: function(divName) {
+ 			var top = ($(window).height() - $(divName).height()) / 2;
+ 			var left = ($(window).width() - $(divName).css('width').substring(0, 3)) / 2;
+ 			var scrollTop = $(document).scrollTop() || 0;
+ 			var scrollLeft = $(document).scrollLeft() || 0;
+ 			$(divName).css({
+ 				position: 'absolute',
+ 				'top': top + scrollTop,
+ 				'left': left + scrollLeft
+ 			}).show();
+ 			//$('#_overlay_').show();
+ 		}
+ 	}
+
 	var _g=new geo();
 	var nList=1,perList=1;
 	function getDealsInfo(data) {
@@ -160,15 +190,10 @@ define(function(require, exports, module) {
 
 			//status 1
 			if (version.replace(/\./, "") < 68.5) {
-				DPApp.show_alert({
-					title: '客户端版本过低',
-					message: '请下载最新版客户端！',
-					options: [],
-					cancel: '返回'
-				}, function() {
-				location.href = "http://m.dianping.com/download/synthesislink?redirect=3197&tag=external";
-				});
-				return;
+				_utils.showOverlay(0);
+ 				_utils.centershow('.popbox');
+
+		return;
 			}
 			//status 2
 			if (json.success == 0) {
@@ -219,6 +244,17 @@ define(function(require, exports, module) {
 	exports.init = function() {
 		getDealsInfo();
 		share.shareBtn();
+	cancelBtn.on('click', function(e) {
+ 		e.preventDefault();
+ 		_utils.showOverlay(1);
+ 		$('.popbox').hide();
+ 	});
+ 	updateBtn.on('click', function(e) {
+ 		e.preventDefault();
+ 		window.location.href = "http://m.dianping.com/download/synthesislink?redirect=3130&tag=external";
+ 		return false;
+ 	});
+
 	}
 
 });
