@@ -67,7 +67,7 @@ define(function(require, exports, module) {
  	}
 
 	var _g=new geo();
-	var nList=1,perList=1;
+	var nList=10,perList=100;
 	function getDealsInfo(data) {
 		$.ajax({
 			url: dealInfoUrl,
@@ -241,6 +241,35 @@ define(function(require, exports, module) {
 		});
 	}
 
+    /*function shareInfo(share) {
+        Share(share, {
+            url: "http://t1.dpfile.com/t/html/app/events/zonefreeeating1017/index.html?" + (+new Date()),
+            image: "http://i1.s1.dpfile.com/pc/tgzt/5e6bd31183e7f5ea30ec611bddc9dfae(1600c550)/thumb.jpg",
+            title: "大众点评豪掷10亿，请新用户免费吃喝玩乐",
+            desc: "吃喝玩乐，通通不要钱，大众点评新用户专享!"
+        })
+    }*/
+
+    var DPApp = {
+        shareConfig:{
+            url: "http://t1.dpfile.com/t/html/app/events/zonefreeeating1017/index.html?" + (+new Date()),
+            image: "http://i1.s1.dpfile.com/pc/tgzt/5e6bd31183e7f5ea30ec611bddc9dfae(1600c550)/thumb.jpg",
+            title: "大众点评豪掷10亿，请新用户免费吃喝玩乐",
+            desc: "吃喝玩乐，通通不要钱，大众点评新用户专享!"
+        }
+    };
+
+    function initShare(){
+        var iframe = document.createElement("iframe"),
+            frameContainer = document.createElement("div"),
+            shareConfig = "dpshare://_?content=" + encodeURIComponent(JSON.stringify(DPApp.shareConfig));
+
+        frameContainer.setAttribute('style','display:none');
+        frameContainer.appendChild(iframe);
+        document.body.appendChild(frameContainer);
+        iframe.setAttribute("src", shareConfig);
+    }
+
 	exports.init = function() {
 		getDealsInfo();
 		share.shareBtn();
@@ -254,6 +283,7 @@ define(function(require, exports, module) {
  		window.location.href = "http://m.dianping.com/download/synthesislink?redirect=3130&tag=external";
  		return false;
  	});
+        initShare();
 
 	}
 
