@@ -135,7 +135,7 @@ define(function(require, exports, module) {
 	
 	function setDirect(json) {
 
-		$(document).on('click','.item',function(e) {
+		$('.item').on('click',function(e) {
 			e.preventDefault();
 			var dealId = $(e.target).parents('a').attr('data-tuandealid');
 
