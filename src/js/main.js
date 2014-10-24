@@ -57,7 +57,8 @@ define(function(require, exports, module) {
 							if(!a.minValue)return 1;
 							if(!b.minValue)return -1;
 						})
-						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));							if($('.item').length>nList){
+						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));	
+						if($('.item').length>nList){
 							$('.item').each(function(idx,val){
 								if((idx+1)>nList){
 						 		 $('.item').eq(idx).hide();
@@ -77,7 +78,8 @@ define(function(require, exports, module) {
 
 				}
 				else{		
-					$('.detail-list').append(Mustache.render(dealistTpl.deal, json));								if($('.item').length>nList){
+					$('.detail-list').append(Mustache.render(dealistTpl.deal, json));							
+						if($('.item').length>nList){
 							$('.item').each(function(idx,val){
 								if((idx+1)>nList){
 						 		 $('.item').eq(idx).hide();
