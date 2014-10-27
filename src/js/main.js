@@ -22,8 +22,8 @@ define(function(require, exports, module) {
 		appLongitude = httpUtils.getParam('longitude');
         couponRuleID = httpUtils.getParam('couponRuleID');
         env = httpUtils.getParam('env');
-	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID;
-	var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID;
+	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
+	var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
 
 
 	var mdomain='http://m.dianping.com';
