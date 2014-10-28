@@ -53,10 +53,10 @@ define(function(require, exports, module) {
  			}
  		},
  		centershow: function(divName) {
- 			var top = ($(window).height() - $(divName).height()) / 2;
+ 			var top = ($(window).height() - 140) / 2;
  			var left = ($(window).width() - $(divName).css('width').substring(0, 3)) / 2;
- 			var scrollTop = $(document).scrollTop() || 0;
- 			var scrollLeft = $(document).scrollLeft() || 0;
+ 			var scrollTop = $(window).scrollTop() || 0;
+ 			var scrollLeft = $(window).scrollLeft() || 0;
  			$(divName).css({
  				position: 'absolute',
  				'top': top + scrollTop,
