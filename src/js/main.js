@@ -22,6 +22,18 @@ define(function(require, exports, module) {
 		appLongitude = httpUtils.getParam('longitude');
         couponRuleID = httpUtils.getParam('couponRuleID');
         env = httpUtils.getParam('env');
+    if(typeof(eventName) == undefined || eventName == '')
+    {
+        eventName = 'mfchwlzs';
+    }
+    if(typeof(couponRuleID) == undefined || couponRuleID == '')
+    {
+        couponRuleID = '102201';
+    }
+    if(typeof(env) == undefined || env == '')
+    {
+        env = 'product';
+    }
 	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
 	var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
 
@@ -77,7 +89,8 @@ define(function(require, exports, module) {
 			success: function(json) {
 				if(appLatitude&&appLongitude){
 						$(json.dealist).each(function(idx, v) {
-							if (v.geoLocations.length>1 &&appLatitude){
+                            v.imgUrl = v.imgUrl.replace('450c280','120c90');
+                            if (v.geoLocations.length>1 &&appLatitude){
 							v.value=[];
 							$(v.geoLocations).each(function(_idx,_v){
 								v.value[_idx]= _g.value({
@@ -113,10 +126,10 @@ define(function(require, exports, module) {
 							for(var i=nList;i<nList+perList;i++){
 							 $('.item').eq(i).show();
 							};
+                            nList=nList+perList;
 							if(nList>$('.item').length||nList==$('.item').length){
 							$(this).hide();
 							}
-							nList=nList+perList;
 						})
 
 
@@ -170,10 +183,15 @@ define(function(require, exports, module) {
 			}
 			else{
                 $('.buy-btn').text('免费领');
-                $('.price strong').text('0')
+                $('.price strong').text('0');
 			}
 				setDirect(json);		
-			}
+			},
+            error:function(json){
+                $('.buy-btn').text('免费领');
+                $('.price strong').text('0');
+                setDirect(json);
+            }
 		})
 	};
 
@@ -192,9 +210,9 @@ define(function(require, exports, module) {
 			if (version.replace(/\./, "") < 68.5) {
 				_utils.showOverlay(0);
  				_utils.centershow('.popbox');
-
-		return;
+                return;
 			}
+
 			//status 2
 			if (json.success == 0) {
 				location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(loginDealUrl));
