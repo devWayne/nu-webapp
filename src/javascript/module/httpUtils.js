@@ -1,4 +1,3 @@
-define(function(require, exports, module) {
 
 	var httpUtils = {
 
@@ -22,5 +21,4 @@ define(function(require, exports, module) {
 			return paramValue;
 		}
 	}
-	module.exports = exports = httpUtils;
-})
+//	module.exports = exports = httpUtils;

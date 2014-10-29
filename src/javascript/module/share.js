@@ -1,4 +1,3 @@
-define(function(require,exports,module){
 var share = {
 	shareBtn: function() {
 		var shareTipsEl = document.createElement("div");
@@ -16,5 +15,4 @@ var share = {
 		});
 	}
 }
-module.exports = share;
-});
+//module.exports = share;

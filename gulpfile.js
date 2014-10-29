@@ -13,6 +13,19 @@ var template = require('lodash').template;
 var pkg = require('./package.json');
 var dirs = pkg['h5bp-configs'].directories;
 
+var _browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var _ = require('lodash');
+
+
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+
+var browserify = function(opt) {
+    return _browserify(_.extend({
+        bundleExternal: false
+    }, opt));
+};
 
 
 gulp.task('archive:create_archive_dir', function () {
@@ -57,14 +70,28 @@ gulp.task('archive:zip', function (done) {
 gulp.task('clean', function (done) {
     require('del')([
         template('<%= archive %>', dirs),
-        template('<%= dist %>', dirs)
+        template('<%= dist %>', dirs),
+	template('<%= src %>/js',dirs),
+	template('<%= src %>/css',dirs)
     ], done);
 });
 
 gulp.task('copy', [
-	'copy:misc',
-    'compile:less',
+	'copy:misc'
 ]);
+
+gulp.task('compile',[
+	'compile:less',
+	'concat:js'
+]);
+
+
+gulp.task('concat:js', function() {
+  return gulp.src(template('<%= src %>/javascript/*/**', dirs))
+    .pipe(concat('index.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(template('<%= src %>/js',dirs)))
+});
 
 
 
@@ -86,6 +113,7 @@ gulp.task('copy:misc', function () {
         // Exclude the following files
         // (other tasks will handle the copying of these files)
         template('!<%= src %>/less/*.less', dirs),
+        template('!<%= src %>/javascript/**/*', dirs),
 
     ], {
 
@@ -125,6 +153,7 @@ gulp.task('archive', function (done) {
 gulp.task('build', function (done) {
     runSequence(
         ['clean'],
+	'compile',
         'copy',
     done);
 });

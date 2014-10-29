@@ -1,10 +1,9 @@
-define(function(require, exports, module) {
 
  var dealTpl={
 
  'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="{{id}}">\
             <div class="pic">\
-                <img lazy-src="{{imgUrl}}">\
+                <img src="{{imgUrl}}">\
             </div>\
             <div class="info">\
                 <h3>{{dealGroupShortName}}<span class="geo">{{distance}}</span></h3>\
@@ -22,6 +21,5 @@ define(function(require, exports, module) {
 
 }
 
-module.exports=dealTpl;
+//module.exports=dealTpl;
 
-});

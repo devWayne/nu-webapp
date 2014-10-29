@@ -1,6 +1,5 @@
 
-define(function(require,exports,moudles){
-(function () {
+
 
     var callbacksCount = 1
     var callbacks = {}
@@ -50,5 +49,6 @@ define(function(require,exports,moudles){
 			DPApp.send_message('close_web', {modal: modal});
 		}
 	}
-})()
-})
+
+
+

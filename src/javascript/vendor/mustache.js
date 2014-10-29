@@ -2,19 +2,17 @@
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
  */
-define(function(require, exports, module) {
 
 /*global define: false*/
-(function (global, factory) {
- 
-if (typeof exports === "object" && exports) {
+
+;(function (global, factory) {
+  if (typeof exports === "object" && exports) {
     factory(exports); // CommonJS
   } else if (typeof define === "function" && define.amd) {
     define(['exports'], factory); // AMD
   } else {
     factory(global.Mustache = {}); // <script>
   }
-
 }(this, function (mustache) {
 
   var Object_toString = Object.prototype.toString;
@@ -578,5 +576,3 @@ if (typeof exports === "object" && exports) {
   mustache.Writer = Writer;
 
 }));
-
-});

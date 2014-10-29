@@ -1,4 +1,3 @@
-define(function(require, exports, module) {
 
 	var geo = function() {
 		}
@@ -69,7 +68,7 @@ define(function(require, exports, module) {
 		}
 	}
 
-	module.exports = exports=geo;
-});
+//	module.exports = exports=geo;
+
 
 

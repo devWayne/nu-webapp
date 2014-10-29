@@ -1,15 +1,5 @@
-define(function(require, exports, module) {
+$(function(){
 
-	var $ = require('zepto'),
-		Mustache = require('mustache'),
-		cookie = require('cookie');
-
-	var dealistTpl = require('dealTpl');
-
-	var geo = require('geo'),
-		share=require('share'),
-		httpUtils = require('httpUtils');
-	require('bridge');
 	var cancelBtn = $('.j-back'),
  	updateBtn = $('.j-update');
 	var eventId = httpUtils.getParam('eventId'),
@@ -22,8 +12,20 @@ define(function(require, exports, module) {
 		appLongitude = httpUtils.getParam('longitude');
         couponRuleID = httpUtils.getParam('couponRuleID');
         env = httpUtils.getParam('env');
-	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID;
-	var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID;
+    if(typeof(eventName) == undefined || eventName == '')
+    {
+        eventName = 'mfchwlzs';
+    }
+    if(typeof(couponRuleID) == undefined || couponRuleID == '')
+    {
+        couponRuleID = '102201';
+    }
+    if(typeof(env) == undefined || env == '')
+    {
+        env = 'product';
+    }
+	var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
+	var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
 
 
 	var mdomain='http://m.dianping.com';
@@ -67,17 +69,19 @@ define(function(require, exports, module) {
  	}
 
 	var _g=new geo();
-	var nList=1,perList=1;
+	var nList=10,perList=100;
 	function getDealsInfo(data) {
 		$.ajax({
 			url: dealInfoUrl,
+			//url: 'http://10.128.97.57:8000/javascript/test.json',
 			type: 'GET',
 			dataType: 'json',
 			data: data,
 			success: function(json) {
 				if(appLatitude&&appLongitude){
 						$(json.dealist).each(function(idx, v) {
-							if (v.geoLocations.length>1 &&appLatitude){
+                            v.imgUrl = v.imgUrl.replace('450c280','120c90');
+                            if (v.geoLocations.length>1 &&appLatitude){
 							v.value=[];
 							$(v.geoLocations).each(function(_idx,_v){
 								v.value[_idx]= _g.value({
@@ -113,16 +117,16 @@ define(function(require, exports, module) {
 							for(var i=nList;i<nList+perList;i++){
 							 $('.item').eq(i).show();
 							};
+                            nList=nList+perList;
 							if(nList>$('.item').length||nList==$('.item').length){
 							$(this).hide();
 							}
-							nList=nList+perList;
 						})
 
 
 				}
 				else{		
-					$('.detail-list').append(Mustache.render(dealistTpl.deal, json));							
+					$('.detail-list').append(Mustache.render(dealTpl.deal, json));							
 						if($('.item').length>nList){
 							$('.item').each(function(idx,val){
 								if((idx+1)>nList){
@@ -170,10 +174,15 @@ define(function(require, exports, module) {
 			}
 			else{
                 $('.buy-btn').text('免费领');
-                $('.price strong').text('0')
+                $('.price strong').text('0');
 			}
 				setDirect(json);		
-			}
+			},
+            error:function(json){
+                $('.buy-btn').text('免费领');
+                $('.price strong').text('0');
+                setDirect(json);
+            }
 		})
 	};
 
@@ -192,9 +201,9 @@ define(function(require, exports, module) {
 			if (version.replace(/\./, "") < 68.5) {
 				_utils.showOverlay(0);
  				_utils.centershow('.popbox');
-
-		return;
+                return;
 			}
+
 			//status 2
 			if (json.success == 0) {
 				location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(loginDealUrl));
@@ -241,7 +250,36 @@ define(function(require, exports, module) {
 		});
 	}
 
-	exports.init = function() {
+    /*function shareInfo(share) {
+        Share(share, {
+            url: "http://t1.dpfile.com/t/html/app/events/zonefreeeating1017/index.html?" + (+new Date()),
+            image: "http://i1.s1.dpfile.com/pc/tgzt/5e6bd31183e7f5ea30ec611bddc9dfae(1600c550)/thumb.jpg",
+            title: "大众点评豪掷10亿，请新用户免费吃喝玩乐",
+            desc: "吃喝玩乐，通通不要钱，大众点评新用户专享!"
+        })
+    }*/
+
+    var DPApp = {
+        shareConfig:{
+            url: "http://t1.dpfile.com/t/html/app/events/zonefreeeating1017/index.html?" + (+new Date()),
+            image: "http://i1.s1.dpfile.com/pc/tgzt/5e6bd31183e7f5ea30ec611bddc9dfae(1600c550)/thumb.jpg",
+            title: "大众点评豪掷10亿，请新用户免费吃喝玩乐",
+            desc: "吃喝玩乐，通通不要钱，大众点评新用户专享!"
+        }
+    };
+
+    function initShare(){
+        var iframe = document.createElement("iframe"),
+            frameContainer = document.createElement("div"),
+            shareConfig = "dpshare://_?content=" + encodeURIComponent(JSON.stringify(DPApp.shareConfig));
+
+        frameContainer.setAttribute('style','display:none');
+        frameContainer.appendChild(iframe);
+        document.body.appendChild(frameContainer);
+        iframe.setAttribute("src", shareConfig);
+    }
+
+	 function init() {
 		getDealsInfo();
 		share.shareBtn();
 	cancelBtn.on('click', function(e) {
@@ -254,8 +292,15 @@ define(function(require, exports, module) {
  		window.location.href = "http://m.dianping.com/download/synthesislink?redirect=3130&tag=external";
  		return false;
  	});
+        initShare();
 
 	}
+	
 
+	 init();
 });
+
+
+
+
 
