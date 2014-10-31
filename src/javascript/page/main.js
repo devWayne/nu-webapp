@@ -170,7 +170,7 @@ $(function(){
 			jsonp: 'jsonp',
 			success: function(json) {
 			if(json.success&&json.realtime_tg_fresh == 0){
-                $('.container.op-box').append('<img src="http://t.dianping.com/events/m/mfchgds/lyhneww.png">')
+                $('.container.op-box').append('<img src="http://www.dpfile.com/mfchwl/img/lyhneww.png">')
 			}
 			else{
                 $('.buy-btn').text('免费领');
@@ -231,10 +231,10 @@ $(function(){
 			//status 5
 			if (json.integrity_score > 9980) {
 				DPApp.show_alert({
-					title: '此手机号存在一定风险',
+					title: '提示',
 					message: '此手机号存在一定风险，或者通过其他渠道曾有过购买行为，故不能参与本次活动。',
 					options: [],
-					cancel: '返回'
+					cancel: '我知道了'
 				}, function() {
 					location.href = "dianping://home";
 				});

@@ -54,7 +54,7 @@ gulp.task('archive:zip', function (done) {
 
 
 gulp.task('concat:js', function() {
-  return gulp.src(dirs.src+'javascript/**/*')
+  return gulp.src(dirs.src +'/javascript/**/*')
     .pipe(concat('index.js'))
     .pipe(uglify())
     .pipe(gulp.dest(dirs.src+'/js'))
@@ -134,7 +134,8 @@ gulp.task('archive', function (done) {
 gulp.task('build', function (done) {
     runSequence(
         ['clean'],
-	'compile',
+	'compile:less',
+	'concat:js',
         'copy',
     done);
 });
