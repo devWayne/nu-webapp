@@ -105,7 +105,7 @@ $(function(){
 							if(!a.minValue)return 1;
 							if(!b.minValue)return -1;
 						})
-						$('.detail-list').append(Mustache.render(dealistTpl.deal, json));	
+						$('.detail-list').append(Mustache.render(dealTpl.deal, json));	
 						if($('.item').length>nList){
 							$('.item').each(function(idx,val){
 								if((idx+1)>nList){
@@ -231,8 +231,8 @@ $(function(){
 			//status 5
 			if (json.integrity_score > 9980) {
 				DPApp.show_alert({
-					title: '活动太火爆',
-					message: '前方有些拥挤，请稍后再试！',
+					title: '此手机号存在一定风险',
+					message: '此手机号存在一定风险，或者通过其他渠道曾有过购买行为，故不能参与本次活动。',
 					options: [],
 					cancel: '返回'
 				}, function() {
@@ -259,29 +259,12 @@ $(function(){
         })
     }*/
 
-    var DPApp = {
-        shareConfig:{
-            url: "http://t1.dpfile.com/t/html/app/events/zonefreeeating1017/index.html?" + (+new Date()),
-            image: "http://i1.s1.dpfile.com/pc/tgzt/5e6bd31183e7f5ea30ec611bddc9dfae(1600c550)/thumb.jpg",
-            title: "大众点评豪掷10亿，请新用户免费吃喝玩乐",
-            desc: "吃喝玩乐，通通不要钱，大众点评新用户专享!"
-        }
-    };
 
-    function initShare(){
-        var iframe = document.createElement("iframe"),
-            frameContainer = document.createElement("div"),
-            shareConfig = "dpshare://_?content=" + encodeURIComponent(JSON.stringify(DPApp.shareConfig));
-
-        frameContainer.setAttribute('style','display:none');
-        frameContainer.appendChild(iframe);
-        document.body.appendChild(frameContainer);
-        iframe.setAttribute("src", shareConfig);
-    }
 
 	 function init() {
 		getDealsInfo();
 		share.shareBtn();
+		share.initShare();
 	cancelBtn.on('click', function(e) {
  		e.preventDefault();
  		_utils.showOverlay(1);
@@ -292,8 +275,7 @@ $(function(){
  		window.location.href = "http://m.dianping.com/download/synthesislink?redirect=3130&tag=external";
  		return false;
  	});
-        initShare();
-
+       
 	}
 	
 

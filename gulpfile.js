@@ -7,26 +7,10 @@ var plugins = require('gulp-load-plugins')(); // Load all gulp plugins
 var less = require('gulp-less');
 var jade = require('gulp-jade');
 var runSequence = require('run-sequence');    // Temporary solution until gulp 4
-                                              // https://github.com/gulpjs/gulp/issues/355
-var template = require('lodash').template;
-
 var pkg = require('./package.json');
 var dirs = pkg['h5bp-configs'].directories;
-
-var _browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var _ = require('lodash');
-
-
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-
-var browserify = function(opt) {
-    return _browserify(_.extend({
-        bundleExternal: false
-    }, opt));
-};
-
 
 gulp.task('archive:create_archive_dir', function () {
     fs.mkdirSync(path.resolve(dirs.archive), '0755');
@@ -67,12 +51,66 @@ gulp.task('archive:zip', function (done) {
 
 });
 
+
+
+gulp.task('concat:js', function() {
+  return gulp.src(dirs.src+'javascript/**/*')
+    .pipe(concat('index.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(dirs.src+'/js'))
+});
+
+
+
+gulp.task('compile:less', function () {
+
+    var banner = '/*! template v' + pkg.version +' */\n\n';
+
+    return gulp.src(dirs.src+'/less/*.less')
+               .pipe(less())
+               .pipe(plugins.header(banner))
+               .pipe(gulp.dest(dirs.src+'/css'));
+
+});
+
+
+gulp.task('copy:misc', function () {
+    return gulp.src([
+         dirs.src+'/**/*',
+        // Exclude the following files
+        // (other tasks will handle the copying of these files)
+	'!'+dirs.src+'/javascript/**/*',
+	'!'+dirs.src+'/less/*'
+    ], {
+
+        // Include hidden files by default
+        dot: true
+
+    }).pipe(gulp.dest(dirs.dist));
+});
+
+
+gulp.task('jshint', function () {
+    return gulp.src([
+        'gulpfile.js',
+         dirs.src+'/javascript/**/*'
+    ]).pipe(plugins.jshint())
+      .pipe(plugins.jshint.reporter('jshint-stylish'))
+      .pipe(plugins.jshint.reporter('fail'));
+});
+
+gulp.task('watch', function () {
+    gulp.watch([dirs.src+'/less/*'], ['compile:less']);
+});
+
+
+// -----------------------------------------------------------------------------
+// | Main tasks                                                                |
+// -----------------------------------------------------------------------------
 gulp.task('clean', function (done) {
     require('del')([
-        template('<%= archive %>', dirs),
-        template('<%= dist %>', dirs),
-	template('<%= src %>/js',dirs),
-	template('<%= src %>/css',dirs)
+        dirs.archive,
+        dirs.dist
     ], done);
 });
 
@@ -84,63 +122,6 @@ gulp.task('compile',[
 	'compile:less',
 	'concat:js'
 ]);
-
-
-gulp.task('concat:js', function() {
-  return gulp.src(template('<%= src %>/javascript/*/**', dirs))
-    .pipe(concat('index.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest(template('<%= src %>/js',dirs)))
-});
-
-
-
-gulp.task('compile:less', function () {
-
-    var banner = '/*! template v' + pkg.version +' */\n\n';
-
-    return gulp.src(template('<%= src %>/less/*.less', dirs))
-               .pipe(less())
-               .pipe(plugins.header(banner))
-               .pipe(gulp.dest(template('<%= src %>/css', dirs)));
-
-});
-
-
-gulp.task('copy:misc', function () {
-    return gulp.src([
-        template('<%= src %>/*/**', dirs),
-        // Exclude the following files
-        // (other tasks will handle the copying of these files)
-        template('!<%= src %>/less/*.less', dirs),
-        template('!<%= src %>/javascript/**/*', dirs),
-
-    ], {
-
-        // Include hidden files by default
-        dot: true
-
-    }).pipe(gulp.dest(template('<%= dist %>', dirs)));
-});
-
-
-gulp.task('jshint', function () {
-    return gulp.src([
-        'gulpfile.js',
-        template('<%= src %>/js/*.js', dirs)
-    ]).pipe(plugins.jshint())
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(plugins.jshint.reporter('fail'));
-});
-
-gulp.task('watch', function () {
-    gulp.watch([template('<%= src %>/less/*', dirs)], ['compile:less']);
-});
-
-
-// -----------------------------------------------------------------------------
-// | Main tasks                                                                |
-// -----------------------------------------------------------------------------
 
 gulp.task('archive', function (done) {
     runSequence(
