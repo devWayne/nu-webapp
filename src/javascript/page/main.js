@@ -30,12 +30,12 @@ $(function(){
 
 	var mdomain='http://m.dianping.com';
 	var eDomain='http://t.dianping.com';
-    var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp';
+    var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
     var dealInfoUrl = 'http://evt.dianping.com/mfchwl/json/'+cityid+'.json';
 
     if(env != 'product'){
         dealInfoUrl = 'http://evt.dianping.dp/mfchwlzs/json/'+cityid+'.json';
-        userInfoUrl = 'http://mm.51ping.com/weixin/promotion/user-profile/jsonp';
+        userInfoUrl = 'http://mm.51ping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
         mdomain='http://m.51ping.com';
         eDomain='http://t.51ping.com';
     }
