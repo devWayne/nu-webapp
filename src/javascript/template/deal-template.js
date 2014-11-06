@@ -1,7 +1,8 @@
 
  var dealTpl={
 
- 'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="{{id}}">\
+ 'deal':'{{#dealist}}<a class="J_deal" data-tuandealid="{{id}}">\
+	 <div class="item">
             <div class="pic">\
                 <img src="{{imgUrl}}">\
             </div>\
@@ -16,6 +17,7 @@
                         <span class="buy-btn f-r">去团购</span>\
                 </div>\
             </div>\
+	  </div>
         </a>{{/dealist}}'
 
 
