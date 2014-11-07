@@ -234,9 +234,9 @@ $(function(){
 			if (json.integrity_score > 9980) {
 				DPApp.show_alert({
 					title: '提示',
-					message: '此手机号存在一定风险，或者通过其他渠道曾有过购买行为，故不能参与本次活动。',
+					message: '活动爆棚啦，放眼望去人山人海，先喝口茶歇歇吧～',
 					options: [],
-					cancel: '我知道了'
+					cancel: '好的'
 				}, function() {
 					location.href = "dianping://home";
 				});
