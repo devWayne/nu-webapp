@@ -197,6 +197,8 @@ $(function(){
 			var loginDealUrl = mdomain+"/tuan/eventdeal/" + dealId+ '?' + loginParams;
 			var mDealUrl = mdomain+"/tuan/deal/" + dealId;
 
+            _hip.push(['mv', {module: '5_mfchwl_jw', action: 'click', campaignid:1303, camp_step:'joinwill'}]);
+
 			//status 1
 			if (version.replace(/\./, "") < 68.5) {
 				_utils.showOverlay(0);
