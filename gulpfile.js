@@ -53,9 +53,15 @@ gulp.task('archive:zip', function (done) {
 
 
 
-gulp.task('concat:js', function() {
+gulp.task('concat-debug:js', function() {
   return gulp.src(dirs.src +'/javascript/**/*')
     .pipe(concat('index.js'))
+    .pipe(gulp.dest(dirs.src+'/js'))
+});
+
+gulp.task('concat:js', function() {
+  return gulp.src(dirs.src +'/javascript/**/*')
+    .pipe(concat('index.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest(dirs.src+'/js'))
 });
@@ -120,6 +126,7 @@ gulp.task('copy', [
 
 gulp.task('compile',[
 	'compile:less',
+	'concat-debug:js',
 	'concat:js'
 ]);
 
@@ -136,8 +143,14 @@ gulp.task('build', function (done) {
         ['clean'],
 	'compile:less',
 	'concat:js',
+	'concat-debug:js',
         'copy',
     done);
 });
+gulp.task('watch', function () {
+    gulp.watch('javascript/**/*', ['build']);
+});
+
+
 
 gulp.task('default', ['build']);

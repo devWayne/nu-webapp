@@ -649,3 +649,33 @@ li {
   width: 50%;
   float: left;
 }
+.detail-list .item .info .buy-box .free-buy-btn {
+  background-color: #f63;
+  color: #FFF;
+  font-size: 14px;
+  padding: 6px 10px;
+  float: right;
+  border-radius: 2px;
+}
+.free-buy-btn {
+  float: none;
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+}
+.sold-out {
+  background-color: #aaa !important;
+}
+.icon1 {
+  background-size: contain;
+  background-image: url(../css/img/icon1.png);
+  background-repeat: no-repeat;
+}
+.icon2 {
+  background-size: contain;
+  background-image: url(../css/img/icon2.png);
+  background-repeat: no-repeat;
+}
+.nav-bar-text {
+  padding-left: 20px;
+}
