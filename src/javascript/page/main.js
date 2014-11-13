@@ -28,7 +28,7 @@ $(function() {
     var mdomain = 'http://m.dianping.com';
     var eDomain = 'http://t.dianping.com';
     var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
-    var dealInfoUrl = 'http://evt.dianping.com/1493/json/' + cityid + '.json';
+    var dealInfoUrl = 'http://evt.dianping.com/2601/json/' + cityid + '.json';
 
     if (env != 'product') {
         dealInfoUrl = 'http://evt.dianping.dp/1493/json/' + cityid + '.json';
@@ -211,7 +211,7 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-	    var discountRuleId= $(e.target).attr('discountRuleId');
+	    var discountRuleId= $(e.target).parents('a').attr('discountRuleId');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;

@@ -619,10 +619,10 @@ $(function() {
                 return;
             }
             //status 6
-            if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
+            /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
                 location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
                 return;
-            }
+            }*/
 
             location.href = dealUrl;
         });
