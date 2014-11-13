@@ -380,7 +380,7 @@ $(function() {
     var mdomain = 'http://m.dianping.com';
     var eDomain = 'http://t.dianping.com';
     var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
-    var dealInfoUrl = 'http://evt.dianping.com/1493/json/' + cityid + '.json';
+    var dealInfoUrl = 'http://evt.dianping.com/2601/json/' + cityid + '.json';
 
     if (env != 'product') {
         dealInfoUrl = 'http://evt.dianping.dp/1493/json/' + cityid + '.json';
@@ -563,7 +563,7 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-	    var discountRuleId= $(e.target).attr('discountRuleId');
+//	        var discountRuleId= $(e.target).parents('a').attr('data-discountRuleId');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
@@ -652,10 +652,9 @@ $(function() {
 
  var dealTpl={
 
- 'deal':'{{#dealGroups}}<a class="J_deal" data-tuandealid="{{id}}">\
-	 <div class="item {{#hasPromo}}free-buy-item{{/hasPromo}} {{^hasPromo}}none-free-buy-item{{/hasPromo}}">\
+ 'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="{{id}}">\
             <div class="pic">\
-                <img src="{{imageUrl}}">\
+                <img src="{{imgUrl}}">\
             </div>\
             <div class="info">\
                 <h3>{{dealGroupShortName}}<span class="geo">{{distance}}</span></h3>\
@@ -666,12 +665,9 @@ $(function() {
                         <span class="o-price">¥<strong>{{marketPrice}}</strong></span>\
                     </div>\
                         <span class="buy-btn f-r">去团购</span>\
-			{{#hasPromo}}<span class="free-buy-btn f-r" data-discountRuleId="{{discountRuleId}}" style="display:none;">免费领</span>{{/hasPromo}}\
-			{{^hasPromo}}<span class="free-buy-btn f-r sold-out" style="display:none;">抢光了</span>{{/hasPromo}}\
                 </div>\
             </div>\
-	  </div>\
-        </a>{{/dealGroups}}'
+        </a>{{/dealist}}'
 
 
 }
