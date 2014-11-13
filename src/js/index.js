@@ -380,10 +380,10 @@ $(function() {
     var mdomain = 'http://m.dianping.com';
     var eDomain = 'http://t.dianping.com';
     var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
-    var dealInfoUrl = 'http://evt.dianping.com/mfchwl/json/' + cityid + '.json';
+    var dealInfoUrl = 'http://evt.dianping.com/1493/json/' + cityid + '.json';
 
     if (env != 'product') {
-        dealInfoUrl = 'http://evt.dianping.dp/mfchwlzs/json/' + cityid + '.json';
+        dealInfoUrl = 'http://evt.dianping.dp/1493/json/' + cityid + '.json';
         userInfoUrl = 'http://mm.51ping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
         mdomain = 'http://m.51ping.com';
         eDomain = 'http://t.51ping.com';
@@ -423,8 +423,8 @@ $(function() {
 
     function getDealsInfo(data) {
         $.ajax({
-            //url: dealInfoUrl,
-            url: 'http://10.128.97.78:8000/test.json',
+            url: dealInfoUrl,
+           //url: 'http://10.128.97.78:8000/test.json',
             type: 'GET',
             dataType: 'json',
             data: data,
@@ -437,6 +437,7 @@ $(function() {
                 } else {
                     $('.detail-list-lijian').hide();
                     $('.detail-list-lijian').next().hide();
+                    $('.detail-list-lijian').prev().hide();
                 }
                 getUserInfo();
             }
@@ -446,8 +447,8 @@ $(function() {
 
     function listDeals(list, $list) {
         if (appLatitude && appLongitude) {
-            $(list.dealist).each(function(idx, v) {
-                v.imgUrl = v.imgUrl.replace('450c280', '120c90');
+            $(list.dealGroups).each(function(idx, v) {
+                v.imageUrl = v.imageUrl.replace('450c280', '120c90');
                 if (v.geoLocations.length > 1 && appLatitude) {
                     v.value = [];
                     $(v.geoLocations).each(function(_idx, _v) {
@@ -471,7 +472,7 @@ $(function() {
                     v.sortValue = -1;
                 }
             })
-            list.dealist.sort(function(a, b) {
+            list.dealGroups.sort(function(a, b) {
                 if (a.sortValue && b.sortValue) return a.sortValue - b.sortValue;
             })
             $list.append(Mustache.render(dealTpl.deal, list));
@@ -482,6 +483,9 @@ $(function() {
                     }
                 });
             }
+	    else{
+	    	 $list.next().hide();
+	    }
             $list.next().on('click', function(e) {
                 for (var i = nList; i < nList + perList; i++) {
                     $list.children().eq(i).show();
@@ -559,16 +563,16 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-
-            var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params;
+	    var discountRuleId= $(e.target).attr('discountRuleId');
+            var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
-
+	    var appUrl= "dianping://tuandeal?id="+ dealId;
             _hip.push(['mv', {
                 module: '5_mfchwl_jw',
                 action: 'click',
                 campaignid: 1303,
-                camp_step: 'joinwill'
+                camp_step: 'home'
             }]);
 
             //status 1
@@ -586,7 +590,7 @@ $(function() {
 
             //oldUser redirect to m.dianping.com site
             if (json.realtime_tg_fresh == 0) {
-                location.href = mDealUrl;
+                location.href = appUrl;
                 return;
             }
 
@@ -662,7 +666,7 @@ $(function() {
                         <span class="o-price">¥<strong>{{marketPrice}}</strong></span>\
                     </div>\
                         <span class="buy-btn f-r">去团购</span>\
-			{{#hasPromo}}<span class="free-buy-btn f-r" style="display:none;">免费领</span>{{/hasPromo}}\
+			{{#hasPromo}}<span class="free-buy-btn f-r" data-discountRuleId="{{discountRuleId}}" style="display:none;">免费领</span>{{/hasPromo}}\
 			{{^hasPromo}}<span class="free-buy-btn f-r sold-out" style="display:none;">抢光了</span>{{/hasPromo}}\
                 </div>\
             </div>\
