@@ -424,7 +424,7 @@ $(function() {
     function getDealsInfo(data) {
         $.ajax({
             url: dealInfoUrl,
-           //url: 'http://10.128.97.78:8000/test.json',
+            //url: 'http://10.128.97.78:8000/test.json',
             type: 'GET',
             dataType: 'json',
             data: data,
@@ -483,9 +483,9 @@ $(function() {
                     }
                 });
             }
-	    else{
-	    	 $list.next().hide();
-	    }
+            else{
+                $list.next().hide();
+            }
             $list.next().on('click', function(e) {
                 for (var i = nList; i < nList + perList; i++) {
                     $list.children().eq(i).show();
@@ -563,11 +563,11 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-//	        var discountRuleId= $(e.target).parents('a').attr('data-discountRuleId');
+            var discountRuleId= $(e.target).parents('a').attr('data-discountruleid');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
-	    var appUrl= "dianping://tuandeal?id="+ dealId;
+            var appUrl= "dianping://tuandeal?id="+ dealId;
             _hip.push(['mv', {
                 module: '5_mfchwl_jw',
                 action: 'click',
@@ -620,9 +620,9 @@ $(function() {
             }
             //status 6
             /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
-                location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
-                return;
-            }*/
+             location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
+             return;
+             }*/
 
             location.href = dealUrl;
         });
@@ -650,11 +650,12 @@ $(function() {
 });
 
 
- var dealTpl={
+var dealTpl={
 
- 'deal':'{{#dealist}}<a class="item J_deal" data-tuandealid="{{id}}">\
+    'deal':'{{#dealGroups}}<a class="J_deal" data-tuandealid="{{id}}" data-discountRuleId="{{discountRuleId}}">\
+	 <div class="item {{#hasPromo}}free-buy-item{{/hasPromo}} {{^hasPromo}}none-free-buy-item{{/hasPromo}}">\
             <div class="pic">\
-                <img src="{{imgUrl}}">\
+                <img src="{{imageUrl}}">\
             </div>\
             <div class="info">\
                 <h3>{{dealGroupShortName}}<span class="geo">{{distance}}</span></h3>\
@@ -665,9 +666,12 @@ $(function() {
                         <span class="o-price">¥<strong>{{marketPrice}}</strong></span>\
                     </div>\
                         <span class="buy-btn f-r">去团购</span>\
+			{{#hasPromo}}<span class="free-buy-btn f-r" style="display:none;">免费领</span>{{/hasPromo}}\
+			{{^hasPromo}}<span class="free-buy-btn f-r sold-out" style="display:none;">抢光了</span>{{/hasPromo}}\
                 </div>\
             </div>\
-        </a>{{/dealist}}'
+	  </div>\
+        </a>{{/dealGroups}}'
 
 
 }

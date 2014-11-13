@@ -72,7 +72,7 @@ $(function() {
     function getDealsInfo(data) {
         $.ajax({
             url: dealInfoUrl,
-           //url: 'http://10.128.97.78:8000/test.json',
+            //url: 'http://10.128.97.78:8000/test.json',
             type: 'GET',
             dataType: 'json',
             data: data,
@@ -131,9 +131,9 @@ $(function() {
                     }
                 });
             }
-	    else{
-	    	 $list.next().hide();
-	    }
+            else{
+                $list.next().hide();
+            }
             $list.next().on('click', function(e) {
                 for (var i = nList; i < nList + perList; i++) {
                     $list.children().eq(i).show();
@@ -211,11 +211,11 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-//	        var discountRuleId= $(e.target).parents('a').attr('data-discountRuleId');
+            var discountRuleId= $(e.target).parents('a').attr('data-discountruleid');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
-	    var appUrl= "dianping://tuandeal?id="+ dealId;
+            var appUrl= "dianping://tuandeal?id="+ dealId;
             _hip.push(['mv', {
                 module: '5_mfchwl_jw',
                 action: 'click',
@@ -268,9 +268,9 @@ $(function() {
             }
             //status 6
             /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
-                location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
-                return;
-            }*/
+             location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
+             return;
+             }*/
 
             location.href = dealUrl;
         });
