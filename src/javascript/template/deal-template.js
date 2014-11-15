@@ -1,7 +1,6 @@
+;var dealTpl = {
 
- var dealTpl={
-
- 'deal':'{{#dealGroups}}<a class="J_deal" data-tuandealid="{{id}}"  data-discountRuleId="{{discountRuleId}}">\
+    'deal': '{{#dealGroups}}<a class="J_deal" data-tuandealid="{{id}}" data-discountRuleId="{{discountRuleId}}">\
 	 <div class="item {{#hasPromo}}free-buy-item{{/hasPromo}} {{^hasPromo}}none-free-buy-item{{/hasPromo}}">\
             <div class="pic">\
                 <img src="{{imageUrl}}">\
@@ -26,4 +25,3 @@
 }
 
 //module.exports=dealTpl;
-

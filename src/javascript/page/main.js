@@ -28,7 +28,7 @@ $(function() {
     var mdomain = 'http://m.dianping.com';
     var eDomain = 'http://t.dianping.com';
     var userInfoUrl = 'http://mm.dianping.com/weixin/promotion/user-profile/jsonp?evt=mfchwl';
-    var dealInfoUrl = 'http://evt.dianping.com/1493/json/' + cityid + '.json';
+    var dealInfoUrl = 'http://evt.dianping.com/2601/json/' + cityid + '.json';
 
     if (env != 'product') {
         dealInfoUrl = 'http://evt.dianping.dp/1493/json/' + cityid + '.json';
@@ -72,7 +72,7 @@ $(function() {
     function getDealsInfo(data) {
         $.ajax({
             url: dealInfoUrl,
-           //url: 'http://10.128.97.78:8000/test.json',
+            //url: 'http://10.128.97.78:8000/test.json',
             type: 'GET',
             dataType: 'json',
             data: data,
@@ -131,9 +131,9 @@ $(function() {
                     }
                 });
             }
-	    else{
-	    	 $list.next().hide();
-	    }
+            else{
+                $list.next().hide();
+            }
             $list.next().on('click', function(e) {
                 for (var i = nList; i < nList + perList; i++) {
                     $list.children().eq(i).show();
@@ -211,15 +211,15 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-	    var discountRuleId= $(e.target).parents('a').attr('discountRuleId');
+            var discountRuleId= $(e.target).parents('a').attr('data-discountruleid');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
-            var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
+            var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams + +'&discountRuleId='+discountRuleId;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
-	    var appUrl= "dianping://tuandeal?id="+ dealId;
+            var appUrl= "dianping://tuandeal?id="+ dealId;
             _hip.push(['mv', {
                 module: '5_mfchwl_jw',
                 action: 'click',
-                campaignid: 1303,
+                campaignid: 2601,
                 camp_step: 'home'
             }]);
 
@@ -267,12 +267,11 @@ $(function() {
                 return;
             }
             //status 6
-            
-	    /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
-                location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
-                return;
-            }
-	  */	
+            /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
+             location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
+             return;
+             }*/
+
             location.href = dealUrl;
         });
     }
