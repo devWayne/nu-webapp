@@ -211,7 +211,7 @@ $(function() {
         $('.free-buy-item').on('click', function(e) {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
-	    var discountRuleId= $(e.target).attr('discountRuleId');
+	    var discountRuleId= $(e.target).parents('a').attr('discountRuleId');
             var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
             var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
@@ -267,11 +267,12 @@ $(function() {
                 return;
             }
             //status 6
-            if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
+            
+	    /*if (json.integrity_score > 5000 && json.integrity_score <= 9980 && json.up_sms == 1) {
                 location.href = eDomain + "/lab/common/uploadSmsCheck?eventId=" + couponRuleID + "&token=" + token + "&bizType=2&callback=" + encodeURIComponent(dealUrl);
                 return;
             }
-
+	  */	
             location.href = dealUrl;
         });
     }
