@@ -21,8 +21,8 @@ $(function() {
     if (typeof(env) == undefined || env == '') {
         env = 'product';
     }
-    var params = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
-    var loginParams = "eventName=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&couponRuleID=" + couponRuleID + "&source=1";
+    var params = "eventname=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=" + token + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&source=1";
+    var loginParams = "eventname=" + eventName + "&cityid=" + cityid + "&version=" + version + "&token=*" + "&latitude=" + appLatitude + "&longitude=" + appLongitude + "&dpid=" + dpid + "&source=1";
 
 
     var mdomain = 'http://m.dianping.com';
@@ -212,8 +212,8 @@ $(function() {
             e.preventDefault();
             var dealId = $(e.target).parents('a').attr('data-tuandealid');
             var discountRuleId= $(e.target).parents('a').attr('data-discountruleid');
-            var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&discountRuleId='+discountRuleId;
-            var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams + +'&discountRuleId='+discountRuleId;
+            var dealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + params+'&ruleid='+discountRuleId;
+            var loginDealUrl = mdomain + "/tuan/eventdeal/" + dealId + '?' + loginParams + +'&ruleid='+discountRuleId;
             var mDealUrl = mdomain + "/tuan/deal/" + dealId;
             var appUrl= "dianping://tuandeal?id="+ dealId;
             _hip.push(['mv', {
@@ -235,7 +235,7 @@ $(function() {
                 location.href = 'dianping://loginweb?url=' + encodeURIComponent(mdomain + '/login/app?version=' + version + '&logintype=m') + '&goto=' + encodeURIComponent('dianping://complexweb?url=' + encodeURIComponent(loginDealUrl));
                 return;
             }
-
+1
             //oldUser redirect to m.dianping.com site
             if (json.realtime_tg_fresh == 0) {
                 location.href = appUrl;
