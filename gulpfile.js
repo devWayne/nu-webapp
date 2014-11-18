@@ -102,7 +102,6 @@ gulp.task('jshint', function () {
          dirs.src+'/javascript/**/*'
     ]).pipe(plugins.jshint())
       .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(plugins.jshint.reporter('fail'));
 });
 
 gulp.task('watch', function () {
